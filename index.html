@@ -3,28 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elevadores Nacional | Emergencias 24h | Instalación y Mantenimiento</title>
-    <meta name="description" content="Mantenimiento y instalación de elevadores con cobertura nacional. Emergencias 24/7. WhatsApp directo.">
+    <title>Elevadores Nacional | Portal Clientes | Emergencias 24h</title>
+    <meta name="description" content="Mantenimiento y instalación de elevadores. Acceso clientes 24/7.">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- BOTÓN EMERGENCIA FLOATING (Siempre visible) -->
+    <!-- BOTÓN EMERGENCIA FLOATING -->
     <a href="https://wa.me/573000000000?text=🚨 EMERGENCIA - Necesito soporte inmediato" 
        class="emergency-float" 
        target="_blank">
         🚨 Emergencia 24h
     </a>
 
-    <!-- HERO -->
+    <!-- HEADER CON LOGIN -->
+    <header id="mainHeader">
+        <div class="header-content">
+            <h1>Elevadores Nacional</h1>
+            <nav>
+                <button onclick="scrollToSection('services')">Servicios</button>
+                <button onclick="scrollToSection('emergency')">Emergencias</button>
+                <button onclick="scrollToSection('quote')">Cotizar</button>
+                <button id="authButton" onclick="toggleAuth()">Portal Clientes</button>
+                <button id="logoutButton" onclick="logout()" style="display:none;">Salir</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- FORMULARIO LOGIN (oculto por defecto) -->
+    <div id="authForm" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="toggleAuth()">&times;</span>
+            <h2 id="authTitle">Iniciar Sesión</h2>
+            <form onsubmit="handleAuth(event)">
+                <input type="email" id="authEmail" placeholder="Correo electrónico" required>
+                <input type="password" id="authPassword" placeholder="Contraseña" required>
+                <button type="submit" id="authSubmit">Entrar</button>
+            </form>
+            <p id="authToggle">
+                ¿No tienes cuenta? <a href="#" onclick="toggleAuthMode()">Regístrate</a>
+            </p>
+            <p id="authMessage"></p>
+        </div>
+    </div>
+
+    <!-- HERO CON IMAGEN DE FONDO -->
     <section id="hero">
-        <video autoplay muted loop playsinline>
-            <source src="assets/hero-video.mp4" type="video/mp4">
-        </video>
         <div class="hero-content">
             <h1>Movimiento sin límites. Seguridad sin compromisos.</h1>
             <p>Tiempo de respuesta <strong>menos de 30 min</strong> en todo el país</p>
             <button onclick="scrollToSection('emergency')">Reportar Emergencia</button>
             <button onclick="scrollToSection('quote')" class="secondary">Solicitar Cotización</button>
+        </div>
+    </section>
+
+    <!-- DASHBOARD CLIENTES (solo visible si logueado) -->
+    <section id="clientDashboard" style="display: none;">
+        <h2>Mi Panel de Control</h2>
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3>📊 Estado de Elevadores</h3>
+                <p id="elevatorCount">Cargando...</p>
+            </div>
+            <div class="card">
+                <h3>📝 Historial</h3>
+                <ul id="maintenanceHistory"></ul>
+            </div>
+            <div class="card">
+                <h3>📅 Próximo Mantenimiento</h3>
+                <p id="nextMaintenance">Cargando...</p>
+            </div>
         </div>
     </section>
 
@@ -35,7 +82,7 @@
             <div class="card">
                 <h3>🛠️ Mantenimiento Multimarca</h3>
                 <p>OTIS, KONE, Schindler, Thyssenkrupp</p>
-                <button onclick="openChat()">Consultar por este servicio</button>
+                <button onclick="openChat()">Consultar</button>
             </div>
             <div class="card">
                 <h3>⚡ Modernización</h3>
@@ -90,19 +137,19 @@
         <p id="quoteStatus"></p>
     </section>
 
-    <!-- CHATBOT IA (Simplificado) -->
+    <!-- CHATBOT IA -->
     <div id="chatWidget">
         <div id="chatHeader" onclick="toggleChat()">
             <span>💬 Asistente Virtual</span>
         </div>
         <div id="chatBody">
             <div id="chatMessages"></div>
-            <input type="text" id="chatInput" placeholder="Escribe tu pregunta..." onkeypress="handleChatEnter(event)">
+            <input type="text" id="chatInput" placeholder="Escribe..." onkeypress="handleChatEnter(event)">
             <button onclick="sendChat()">Enviar</button>
         </div>
     </div>
 
-    <!-- COBERTURA NACIONAL (Tabla simple) -->
+    <!-- COBERTURA NACIONAL -->
     <section id="coverage">
         <h2>Cobertura Nacional</h2>
         <table id="coverageTable">
@@ -121,12 +168,10 @@
         </table>
     </section>
 
-    <!-- FOOTER -->
     <footer>
         <p>© 2024 Elevadores Nacional | Emergencias 24h: 300 123 4567</p>
     </footer>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/main.js"></script>
 </body>
